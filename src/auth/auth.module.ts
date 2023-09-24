@@ -14,7 +14,7 @@ import { AuthController } from './auth.controller';
         options: {
           url: '0.0.0.0:50051',
           package: AUTH_PACKAGE_NAME,
-          protoPath: 'node_modules/grpc-nest-proto/proto/auth.proto',
+          protoPath: 'node_modules/grpc-nest-proto/auth.proto',
         },
       },
     ]),
