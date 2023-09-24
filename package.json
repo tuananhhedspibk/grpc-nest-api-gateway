@@ -18,11 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto:install": "yarn install git+https://github.com/tuananhhedspibk/grpc-nest-proto.git",
+    "proto:install": "yarn add git+https://github.com/tuananhhedspibk/grpc-nest-proto.git",
     "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/grpc-nest-proto --ts_proto_out=src/auth/ node_modules/grpc-nest-proto/proto/auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:order": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/grpc-nest-proto --ts_proto_out=src/order/ node_modules/grpc-nest-proto/proto/order.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:product": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/grpc-nest-proto --ts_proto_out=src/product/ node_modules/grpc-nest-proto/proto/product.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
-    "proto:all": "npm run proto:auth && npm run proto:order && npm run proto:product"
+    "proto:all": "yarn proto:auth && yarn proto:order && yarn proto:product"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.9.3",
@@ -31,6 +31,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.2.6",
     "@nestjs/platform-express": "^10.0.0",
+    "grpc-nest-proto": "git+https://github.com/tuananhhedspibk/grpc-nest-proto.git",
     "long": "^5.2.3",
     "protobufjs": "^7.2.5",
     "reflect-metadata": "^0.1.13",
