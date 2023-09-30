@@ -1,6 +1,4 @@
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import Long from 'long';
-import { configure, util } from 'protobufjs';
 import { Observable } from 'rxjs';
 
 export const protobufPackage = 'product';
@@ -38,7 +36,6 @@ export interface FindOneResponse {
 
 export interface DecreaseStockRequest {
   id: number;
-  orderId: number;
 }
 
 export interface DecreaseStockResponse {
@@ -52,7 +49,9 @@ export interface ProductServiceClient {
   createProduct(
     request: CreateProductRequest,
   ): Observable<CreateProductResponse>;
+
   findOne(request: FindOneRequest): Observable<FindOneResponse>;
+
   decreaseStock(
     request: DecreaseStockRequest,
   ): Observable<DecreaseStockResponse>;
@@ -65,9 +64,11 @@ export interface ProductServiceController {
     | Promise<CreateProductResponse>
     | Observable<CreateProductResponse>
     | CreateProductResponse;
+
   findOne(
     request: FindOneRequest,
   ): Promise<FindOneResponse> | Observable<FindOneResponse> | FindOneResponse;
+
   decreaseStock(
     request: DecreaseStockRequest,
   ):
@@ -76,7 +77,8 @@ export interface ProductServiceController {
     | DecreaseStockResponse;
 }
 
-export const ProductServiceControllerMethods = () => {
+export function ProductServiceControllerMethods() {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   return function (constructor: Function) {
     const grpcMethods: string[] = ['createProduct', 'findOne', 'decreaseStock'];
     for (const method of grpcMethods) {
@@ -90,7 +92,6 @@ export const ProductServiceControllerMethods = () => {
         descriptor,
       );
     }
-
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
@@ -104,11 +105,6 @@ export const ProductServiceControllerMethods = () => {
       );
     }
   };
-};
+}
 
 export const PRODUCT_SERVICE_NAME = 'ProductService';
-
-if (util.Long !== Long) {
-  util.Long = Long;
-  configure();
-}

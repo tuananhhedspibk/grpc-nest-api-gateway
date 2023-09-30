@@ -1,13 +1,11 @@
-import { GrpcMethod } from '@nestjs/microservices';
-import Long from 'long';
-import { configure, util } from 'protobufjs';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
 export const protobufPackage = 'order';
 
 export interface CreateOrderRequest {
   productId: number;
-  qunatity: number;
+  quantity: number;
   userId: number;
 }
 
@@ -32,7 +30,7 @@ export interface OrderServiceController {
     | CreateOrderResponse;
 }
 
-export const OrderServiceControllerMethods = () => {
+export function OrderServiceControllerMethods() {
   // eslint-disable-next-line @typescript-eslint/ban-types
   return function (constructor: Function) {
     const grpcMethods: string[] = ['createOrder'];
@@ -47,25 +45,19 @@ export const OrderServiceControllerMethods = () => {
         descriptor,
       );
     }
-
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
         method,
       );
-      GrpcMethod('OrderService', method)(
+      GrpcStreamMethod('OrderService', method)(
         constructor.prototype[method],
         method,
         descriptor,
       );
     }
   };
-};
+}
 
 export const ORDER_SERVICE_NAME = 'OrderService';
-
-if (util.Long !== Long) {
-  util.Long = Long;
-  configure();
-}

@@ -1,6 +1,4 @@
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { util, configure } from 'protobufjs/minimal';
-import Long from 'long';
 import { Observable } from 'rxjs';
 
 export const protobufPackage = 'auth';
@@ -37,7 +35,6 @@ export interface ValidateResponse {
 }
 
 export const AUTH_PACKAGE_NAME = 'auth';
-export const AUTH_SERVICE_NAME = 'AuthService';
 
 export interface AuthServiceClient {
   register(request: RegisterRequest): Observable<RegisterResponse>;
@@ -63,8 +60,7 @@ export interface AuthServiceController {
     | ValidateResponse;
 }
 
-export const AuthServiceControllerMethods = () => {
-  // eslint-disable-next-line @typescript-eslint/ban-types
+export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = ['register', 'login', 'validate'];
     for (const method of grpcMethods) {
@@ -78,7 +74,6 @@ export const AuthServiceControllerMethods = () => {
         descriptor,
       );
     }
-
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
@@ -92,9 +87,5 @@ export const AuthServiceControllerMethods = () => {
       );
     }
   };
-};
-
-if (util.Long !== Long) {
-  util.Long = Long;
-  configure();
 }
+export const AUTH_SERVICE_NAME = 'AuthService';
